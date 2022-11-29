@@ -15,7 +15,8 @@ class DecisionTreeLeaf:
     def __init__(self, labels: np.ndarray):
         ys, counts = np.unique(labels, return_counts=True)
         self.y = ys[np.argmax(counts)]
-        self.probs = dict(zip(ys, counts / labels.shape[0]))
+        proportion = counts / labels.shape[0]
+        self.probs = dict(zip(ys, proportion))
 
 
 class DecisionTreeNode:
