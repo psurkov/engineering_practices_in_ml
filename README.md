@@ -51,3 +51,14 @@ pip3 install -i https://test.pypi.org/simple/ --extra-index-url https://pypi.org
 пакета будут также тянутся из pypi-test, что плохо -- там нет некоторых распространённых пакетов, соответственно установка
 может завершиться неудачно. Поэтому командой приведённой выше мы устанавливаем наш пакет из pypi-test, а его зависимости из
 дефолтного pypi.
+
+## Форматеры, линтеры, плагины
+Для форматирования был выбран `isort` и `black`. К flake8 я добавил следующие плагины:
+- `flake8-cognitive-complexity` проверяет сложность функций
+- `flake8-expression-complexity` проверяет сложность выражений
+- `flake8-encodings` обнаруживает ошибки с кодировкой
+- `flake8-return` проверяет, корректность кода касательно `return`
+- `flake8-implicit-str-concat` проверяет, что строчки правильно конкатенируются
+```shell
+flake8 --max-expression-complexity=4 --max-cognitive-complexity=4 src
+```
