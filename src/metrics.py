@@ -38,4 +38,8 @@ def gain(left_y: np.ndarray, right_y: np.ndarray, criterion: Callable) -> float:
     both_sz = both.shape[0]
     left_sz = left_y.shape[0]
     right_sz = right_y.shape[0]
-    return criterion(both) - left_sz / both_sz * criterion(left_y) - right_sz / both_sz * criterion(right_y)
+    return (
+        criterion(both)
+        - left_sz / both_sz * criterion(left_y)
+        - right_sz / both_sz * criterion(right_y)
+    )

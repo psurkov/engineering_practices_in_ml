@@ -1,7 +1,7 @@
 from sklearn.datasets import make_moons
 
 from DecisionTreeClassifier import DecisionTreeClassifier
-from visualization import plot_2d, plot_roc_curve, draw_tree
+from visualization import draw_tree, plot_2d, plot_roc_curve
 
 
 def main():
@@ -15,5 +15,5 @@ def main():
     draw_tree(tree)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
