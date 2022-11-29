@@ -61,9 +61,9 @@ class DecisionTreeClassifier:
     ) -> Union[DecisionTreeNode, DecisionTreeLeaf]:
         if depth >= self.max_depth:
             return DecisionTreeLeaf(y)
-        bests = np.array(
-            [self.__find_best_split_value(k, X, y) for k in range(X.shape[1])]
-        )
+        dimension = X.shape[1]
+        bests = [self.__find_best_split_value(k, X, y) for k in range(dimension)]
+        bests = np.array(bests)
         k = np.argmax(bests, axis=0)[0]
         value = bests[k][1]
         left_X, left_y, right_X, right_y = self.__partition(k, value, X, y)
@@ -92,7 +92,9 @@ class DecisionTreeClassifier:
             g = gain(y_sorted[:i], y_sorted[i:], self.criterion)
             if g > max_gain:
                 max_gain = g
-                value = (x_sorted[i - 1] + x_sorted[i]) / 2
+                prev = x_sorted[i - 1]
+                cur = x_sorted[i]
+                value = (prev + cur) / 2
         return max_gain, value
 
     def __partition(
@@ -101,8 +103,9 @@ class DecisionTreeClassifier:
         """
         Делит по k-ому признаку и значению value X и y на две части
         """
-        left_ind = (X[:, k] < value).nonzero()
-        right_ind = (X[:, k] >= value).nonzero()
+        value_by_k = X[:, k]
+        left_ind = (value_by_k < value).nonzero()
+        right_ind = (value_by_k >= value).nonzero()
         return X[left_ind], y[left_ind], X[right_ind], y[right_ind]
 
     def predict_proba(self, X: np.ndarray) -> List[Dict[Any, float]]:
@@ -129,8 +132,7 @@ class DecisionTreeClassifier:
             return cur.probs
         if x[cur.split_dim] < cur.split_value:
             return self.__predict_proba(x, cur.left)
-        else:
-            return self.__predict_proba(x, cur.right)
+        return self.__predict_proba(x, cur.right)
 
     def predict(self, X: np.ndarray) -> list:
         """
