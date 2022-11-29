@@ -1,9 +1,9 @@
-from typing import Union, NoReturn, Optional, Dict, Any, List, Tuple
+from typing import Any, Dict, List, NoReturn, Optional, Tuple, Union
 
 import numpy as np
 
 from DecisionTree import DecisionTreeLeaf, DecisionTreeNode
-from metrics import gain, gini, entropy
+from metrics import entropy, gain, gini
 
 
 class DecisionTreeClassifier:
@@ -15,9 +15,12 @@ class DecisionTreeClassifier:
 
     """
 
-    def __init__(self, criterion: str = "gini",
-                 max_depth: Optional[int] = None,
-                 min_samples_leaf: int = 1):
+    def __init__(
+        self,
+        criterion: str = "gini",
+        max_depth: Optional[int] = None,
+        min_samples_leaf: int = 1,
+    ):
         """
         Parameters
         ----------
@@ -37,7 +40,7 @@ class DecisionTreeClassifier:
             self.criterion = entropy
         else:
             raise NotImplementedError()
-        self.max_depth = max_depth if max_depth is not None else float('inf')
+        self.max_depth = max_depth if max_depth is not None else float("inf")
         self.min_samples_leaf = min_samples_leaf
 
     def fit(self, X: np.ndarray, y: np.ndarray) -> NoReturn:
@@ -53,10 +56,14 @@ class DecisionTreeClassifier:
         """
         self.root = self.__build_tree(X, y, 0)
 
-    def __build_tree(self, X: np.ndarray, y: np.ndarray, depth: int) -> Union[DecisionTreeNode, DecisionTreeLeaf]:
+    def __build_tree(
+        self, X: np.ndarray, y: np.ndarray, depth: int
+    ) -> Union[DecisionTreeNode, DecisionTreeLeaf]:
         if depth >= self.max_depth:
             return DecisionTreeLeaf(y)
-        bests = np.array([self.__find_best_split_value(k, X, y) for k in range(X.shape[1])])
+        bests = np.array(
+            [self.__find_best_split_value(k, X, y) for k in range(X.shape[1])]
+        )
         k = np.argmax(bests, axis=0)[0]
         value = bests[k][1]
         left_X, left_y, right_X, right_y = self.__partition(k, value, X, y)
@@ -66,10 +73,12 @@ class DecisionTreeClassifier:
             k,
             value,
             self.__build_tree(left_X, left_y, depth + 1),
-            self.__build_tree(right_X, right_y, depth + 1)
+            self.__build_tree(right_X, right_y, depth + 1),
         )
 
-    def __find_best_split_value(self, k: int, X: np.ndarray, y: np.ndarray) -> Tuple[float, float]:
+    def __find_best_split_value(
+        self, k: int, X: np.ndarray, y: np.ndarray
+    ) -> Tuple[float, float]:
         """
         Возвращает лучший gain и значение по которому для этого надо разделять
         """
@@ -77,7 +86,7 @@ class DecisionTreeClassifier:
         sorted_indexes = np.argsort(x)
         x_sorted = x[sorted_indexes]
         y_sorted = y[sorted_indexes]
-        max_gain = float('-inf')
+        max_gain = float("-inf")
         value = 0
         for i in range(1, y_sorted.shape[0]):
             g = gain(y_sorted[:i], y_sorted[i:], self.criterion)
@@ -86,8 +95,9 @@ class DecisionTreeClassifier:
                 value = (x_sorted[i - 1] + x_sorted[i]) / 2
         return max_gain, value
 
-    def __partition(self, k: int, value: float, X: np.ndarray, y: np.ndarray) -> Tuple[
-        np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+    def __partition(
+        self, k: int, value: float, X: np.ndarray, y: np.ndarray
+    ) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
         """
         Делит по k-ому признаку и значению value X и y на две части
         """
@@ -112,7 +122,9 @@ class DecisionTreeClassifier:
         """
         return [self.__predict_proba(x, self.root) for x in X]
 
-    def __predict_proba(self, x: np.ndarray, cur: Union[DecisionTreeNode, DecisionTreeLeaf]) -> Dict[Any, float]:
+    def __predict_proba(
+        self, x: np.ndarray, cur: Union[DecisionTreeNode, DecisionTreeLeaf]
+    ) -> Dict[Any, float]:
         if isinstance(cur, DecisionTreeLeaf):
             return cur.probs
         if x[cur.split_dim] < cur.split_value:
