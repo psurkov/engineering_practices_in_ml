@@ -29,7 +29,7 @@ def draw_tree_rec(tree_root, x_left, x_right, y):
     return x_center
 
 
-def draw_tree(tree, save_path=None):
+def draw_tree(tree, output):
     td = tree_depth(tree.root)
     plt.figure(figsize=(0.33 * 2**td, 2 * td))
     plt.xlim(-1, 1)
@@ -37,12 +37,10 @@ def draw_tree(tree, save_path=None):
     plt.axis("off")
     draw_tree_rec(tree.root, -1, 1, td)
     plt.tight_layout()
-    if save_path is not None:
-        plt.savefig(save_path)
-    plt.show()
+    plt.savefig(output)
 
 
-def plot_roc_curve(y_test, p_pred):
+def plot_roc_curve(y_test, p_pred, output):
     positive_samples = sum(1 for y in y_test if y == 0)
     tpr = []
     fpr = []
@@ -59,7 +57,7 @@ def plot_roc_curve(y_test, p_pred):
     plt.xlim(-0.01, 1.01)
     plt.ylim(-0.01, 1.01)
     plt.tight_layout()
-    plt.show()
+    plt.savefig(output)
 
 
 def get_tpr_fpr(p_pred, w, y_test):
@@ -132,7 +130,7 @@ def get_random_color():
     return list(np.random.random(3))
 
 
-def plot_2d(tree, X, y):
+def plot_2d(tree, X, y, output):
     plt.figure(figsize=(9, 9))
     unique_classes = np.unique(y)
     colors = {c: get_random_color() for c in unique_classes}
@@ -144,4 +142,4 @@ def plot_2d(tree, X, y):
         plt.scatter(X[y == c, 0], X[y == c, 1], c=[colors[c]], label=c)
     plt.legend()
     plt.tight_layout()
-    plt.show()
+    plt.savefig(output)
