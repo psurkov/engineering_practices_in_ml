@@ -1,0 +1,13 @@
+prepare:
+  seed: 42
+  data:
+    noise: 0.35
+    train:
+      n_samples: 1500
+    test:
+      n_samples: 200
+
+train:
+  seed: 42
+  max_depth: 5
+  min_samples_leaf: 30

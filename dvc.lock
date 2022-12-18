@@ -1,0 +1,51 @@
+schema: '2.0'
+stages:
+  prepare:
+    cmd: python src/prepare.py
+    deps:
+    - path: src/prepare.py
+      md5: 16a44f7b3920ae67afe32223e1edbf0a
+      size: 707
+    params:
+      params.yaml:
+        prepare.data.noise: 0.35
+        prepare.data.test.n_samples: 200
+        prepare.data.train.n_samples: 1500
+        prepare.seed: 42
+    outs:
+    - path: data
+      md5: e150aa31c9cf950014bd2851b44a1b69.dir
+      size: 128614
+      nfiles: 4
+  run:
+    cmd: python src/main.py
+    deps:
+    - path: data
+      md5: e150aa31c9cf950014bd2851b44a1b69.dir
+      size: 128614
+      nfiles: 4
+    - path: src/DecisionTree.py
+      md5: 2c62702584e8596120bc940df4ab229b
+      size: 1473
+    - path: src/DecisionTreeClassifier.py
+      md5: d07250eb4a1151e7f35a78d0dff0def4
+      size: 5400
+    - path: src/main.py
+      md5: 23b76e370cf6a23b153bdd6e8c126a25
+      size: 1246
+    - path: src/metrics.py
+      md5: 60276d5bfe9d6b3a31a3075b199e8a32
+      size: 1255
+    - path: src/visualization.py
+      md5: 2b543b5da7fba7094cd850e668c41fef
+      size: 4229
+    params:
+      params.yaml:
+        train.max_depth: 5
+        train.min_samples_leaf: 30
+        train.seed: 42
+    outs:
+    - path: artifacts
+      md5: 572983ace5cce1144f38f9cbe1edba11.dir
+      size: 240324
+      nfiles: 3

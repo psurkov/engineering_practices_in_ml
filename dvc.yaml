@@ -1,0 +1,27 @@
+stages:
+  prepare:
+    cmd: python src/prepare.py
+    deps:
+    - src/prepare.py
+    params:
+    - prepare.data.noise
+    - prepare.data.test.n_samples
+    - prepare.data.train.n_samples
+    - prepare.seed
+    outs:
+    - data
+  run:
+    cmd: python src/main.py
+    deps:
+    - data
+    - src/DecisionTree.py
+    - src/DecisionTreeClassifier.py
+    - src/main.py
+    - src/metrics.py
+    - src/visualization.py
+    params:
+    - train.max_depth
+    - train.min_samples_leaf
+    - train.seed
+    outs:
+    - artifacts
