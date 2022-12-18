@@ -1,3 +1,5 @@
+import os
+
 import numpy
 from sklearn.datasets import make_moons
 import dvc.api
@@ -14,10 +16,11 @@ def main():
         params["prepare"]["data"]["test"]["n_samples"], noise=noise
     )
 
-    numpy.savetxt("../data/trainX.csv", X, delimiter=",")
-    numpy.savetxt("../data/trainY.csv", y, delimiter=",")
-    numpy.savetxt("../data/testX.csv", X_test, delimiter=",")
-    numpy.savetxt("../data/testY.csv", y_test, delimiter=",")
+    os.mkdir("data")
+    numpy.savetxt("data/trainX.csv", X, delimiter=",")
+    numpy.savetxt("data/trainY.csv", y, delimiter=",")
+    numpy.savetxt("data/testX.csv", X_test, delimiter=",")
+    numpy.savetxt("data/testY.csv", y_test, delimiter=",")
 
 
 if __name__ == "__main__":
