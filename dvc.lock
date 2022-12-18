@@ -31,8 +31,8 @@ stages:
       md5: d07250eb4a1151e7f35a78d0dff0def4
       size: 5400
     - path: src/main.py
-      md5: 3a1c1835108321a54b2d0fc8b7a1d789
-      size: 1012
+      md5: 23b76e370cf6a23b153bdd6e8c126a25
+      size: 1246
     - path: src/metrics.py
       md5: 60276d5bfe9d6b3a31a3075b199e8a32
       size: 1255
