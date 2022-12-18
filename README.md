@@ -85,3 +85,21 @@ DAG выглядит крайне просто
 dvc dag
 ```
 ![img.png](images/img.png)
+
+## CLI
+```shell
+python src/main.py --help
+```
+```
+usage: main.py [-h] [-d MAX_DEPTH] [-l MIN_SAMPLES_LEAF]              
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -d MAX_DEPTH, --max_depth MAX_DEPTH
+  -l MIN_SAMPLES_LEAF, --min_samples_leaf MIN_SAMPLES_LEAF
+```
+Например, вызов 
+```shell
+python src/main.py -d 1 -l 10
+```
+Обучит дерево с максимальной глубиной 1 и минимальным 10 точек в листе

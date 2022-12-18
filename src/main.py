@@ -1,3 +1,4 @@
+import argparse
 import os
 
 import dvc.api
@@ -9,14 +10,24 @@ from visualization import draw_tree, plot_2d, plot_roc_curve
 
 def main():
     X = numpy.genfromtxt("data/trainX.csv", delimiter=",")
-    y = numpy.genfromtxt("data/trainY.csv",  delimiter=",")
+    y = numpy.genfromtxt("data/trainY.csv", delimiter=",")
     X_test = numpy.genfromtxt("data/testX.csv", delimiter=",")
-    y_test = numpy.genfromtxt("data/testY.csv",  delimiter=",")
+    y_test = numpy.genfromtxt("data/testY.csv", delimiter=",")
 
     params = dvc.api.params_show()
-    max_depth = params["train"]["max_depth"]
-    min_samples_leaf = params["train"]["min_samples_leaf"]
-    tree = DecisionTreeClassifier(max_depth=max_depth, min_samples_leaf=min_samples_leaf)
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "-d", "--max_depth", default=params["train"]["max_depth"], type=int
+    )
+    parser.add_argument(
+        "-l", "--min_samples_leaf", default=params["train"]["min_samples_leaf"], type=int
+    )
+    args = parser.parse_args()
+
+    tree = DecisionTreeClassifier(
+        max_depth=args.max_depth, min_samples_leaf=args.min_samples_leaf
+    )
 
     numpy.random.seed(params["train"]["seed"])
 
